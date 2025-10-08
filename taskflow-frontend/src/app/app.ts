@@ -1,11 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { TaskList } from './task-list/task-list';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TaskList],
+  imports: [TaskList],
   template:  `
   <main style="padding: 20px;">
       <h1>TaskFlow - Administrador de Tareas</h1>
