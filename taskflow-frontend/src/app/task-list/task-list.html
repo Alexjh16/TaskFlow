@@ -1,19 +1,125 @@
-<h3>Tareas Pendientes</h3>
-
+<h3 class="text-lg font-medium">Tareas Pendientes</h3>
 <div *ngIf="tasks$ | async as tasks; else loading"  >
     <p *ngIf="tasks.length === 0" >No hay tareas pendientes </p>
     <ul *ngIf="tasks.length > 0">
         <li *ngFor="let task of tasks">
             <span
              [style.text-decoration]="task.is_completed ? 'line-through' : 'none'"
-             [style.color]="task.is_completed ? 'gray' : 'black'">
+             [style.color]="task.is_completed ? 'green' : 'orange'">
             >
-            {{ task.title}}
+            {{ task.title }} : Categoría {{ task.category.name }}
             </span>
         </li>
 
     </ul>
 </div>
+
+<div class="flex flex-wrap space-y-5 lg:space-x-5 lg:space-y-0">
+    <div class="flex-auto lg:flex-1 w-full lg:w-50">
+        <ul id="left-sortable" class="flex flex-col">
+            <li
+                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
+                <svg class="shrink-0 size-4"
+                    xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9">
+                    </path>
+                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                </svg>
+                Newsletter
+               
+            </li>
+            <li
+                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
+                <svg class="shrink-0 size-4"
+                    xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242">
+                    </path>
+                    <path d="M12 12v9"></path>
+                    <path d="m8 17 4 4 4-4"></path>
+                </svg>
+                Downloads
+               
+            </li>
+            <li
+                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
+                <svg class="shrink-0 size-4"
+                    xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2">
+                    </path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                Team Account
+               
+            </li>
+        </ul>
+    </div>
+    <div class="flex-auto lg:flex-1 w-full lg:w-50">
+        <ul id="right-sortable" class="flex flex-col">
+            <li
+                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
+                <svg class="shrink-0 size-4"
+                    xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3">
+                    </path>
+                    <path d="M12 17h.01"></path>
+                </svg>
+                Questions
+               
+            </li>
+            <li
+                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
+                <svg class="shrink-0 size-4"
+                    xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="15" r="3"></circle>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M10 15H6a4 4 0 0 0-4 4v2"></path>
+                    <path d="m21.7 16.4-.9-.3"></path>
+                    <path d="m15.2 13.9-.9-.3"></path>
+                    <path d="m16.6 18.7.3-.9"></path>
+                    <path d="m19.1 12.2.3-.9"></path>
+                    <path d="m19.6 18.7-.4-1"></path>
+                    <path d="m16.8 12.3-.4-1"></path>
+                    <path d="m14.3 16.6 1-.4"></path>
+                    <path d="m20.7 13.8 1-.4"></path>
+                </svg>
+                Settings
+               
+            </li>
+            <li
+                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
+                <svg class="shrink-0 size-4"
+                    xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+                Activity
+               
+            </li>
+        </ul>
+    </div>
+</div>
+
 
 <ng-template #loading>
     <p>Cargando tareas desde el API GraphQL...</p>
