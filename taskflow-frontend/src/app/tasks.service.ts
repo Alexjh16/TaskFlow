@@ -6,12 +6,14 @@ import { map, catchError } from 'rxjs/operators';
 //definar la query para graphql
 
 const GET_TASKS_QUERY = gql`
-  query GetTask{
+  query GetTasks{
     tasks {
       id
       title
+      description
       is_completed
       category {
+        id
         name
       }
     }

@@ -1,126 +1,156 @@
-<h3 class="text-lg font-medium">Tareas Pendientes</h3>
-<div *ngIf="tasks$ | async as tasks; else loading"  >
-    <p *ngIf="tasks.length === 0" >No hay tareas pendientes </p>
-    <ul *ngIf="tasks.length > 0">
-        <li *ngFor="let task of tasks">
-            <span
-             [style.text-decoration]="task.is_completed ? 'line-through' : 'none'"
-             [style.color]="task.is_completed ? 'green' : 'orange'">
-            >
-            {{ task.title }} : Categoría {{ task.category.name }}
+<div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 sm:p-6 lg:p-8">
+  <!-- Header mejorado -->
+  <div class="max-w-7xl mx-auto mb-8">
+    <div class="text-center space-y-4">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 animate-gradient">
+        ✨ TaskFlow Pro
+      </h1>
+      <p class="text-slate-300 text-lg">Gestión inteligente de tareas con drag & drop</p>
+    </div>
+  </div>
+
+  <div *ngIf="categories.length > 0; else loading" class="max-w-7xl mx-auto">
+    <!-- Stats simplificados -->
+    <div class="flex flex-wrap justify-center gap-4 mb-8">
+      <div class="glass-card px-6 py-3 rounded-full backdrop-blur-lg bg-white/10 border border-white/20">
+        <span class="text-slate-200 text-sm font-medium">
+          <span class="text-violet-400 font-bold">{{ tasks.length }}</span> tareas en <span class="text-cyan-400 font-bold">{{ categories.length }}</span> categorías
+        </span>
+      </div>
+    </div>
+    
+    <!-- Grid de categorías mejorado -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      
+      <!-- Columna por cada categoría -->
+      <div *ngFor="let category of categories" 
+           class="category-column bg-white/95 backdrop-blur-sm rounded-2xl p-5 border border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-xl shadow-lg"
+           (dragover)="onDragOver($event)"
+           (dragleave)="onDragLeave($event)"
+           (drop)="onDrop($event, category)">
+        
+        <!-- Header de la categoría simplificado -->
+        <div class="category-header mb-5 pb-4 border-b border-gray-200">
+          <div class="flex items-center justify-between">
+            <h4 class="text-lg font-bold text-gray-800">
+              {{ category }}
+            </h4>
+            <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-semibold">
+              {{ groupedTasks[category].length || 0 }}
             </span>
-        </li>
-
-    </ul>
-</div>
-
-<div class="flex flex-wrap space-y-5 lg:space-x-5 lg:space-y-0">
-    <div class="flex-auto lg:flex-1 w-full lg:w-50">
-        <ul id="left-sortable" class="flex flex-col">
-            <li
-                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-                <svg class="shrink-0 size-4"
-                    xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9">
-                    </path>
-                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
-                </svg>
-                Newsletter
-               
-            </li>
-            <li
-                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-                <svg class="shrink-0 size-4"
-                    xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242">
-                    </path>
-                    <path d="M12 12v9"></path>
-                    <path d="m8 17 4 4 4-4"></path>
-                </svg>
-                Downloads
-               
-            </li>
-            <li
-                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-                <svg class="shrink-0 size-4"
-                    xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2">
-                    </path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-                Team Account
-               
-            </li>
-        </ul>
+          </div>
+        </div>
+        
+        <!-- Lista de tareas de esta categoría -->
+        <div class="space-y-3 min-h-[250px]">
+          <div *ngFor="let task of groupedTasks[category]" 
+               draggable="true"
+               (dragstart)="onDragStart($event, task, category)"
+               (dragend)="onDragEnd($event)"
+               (dragover)="onDragOver($event)"
+               (drop)="onDropReorder($event, task, category)"
+               class="task-card bg-white border border-gray-200 rounded-xl p-4 hover:border-gray-300 cursor-move transition-all duration-300 hover:shadow-md group">
+            
+            <!-- Contenido de la tarea -->
+            <div class="flex items-start space-x-3">
+              <!-- Drag handle simplificado -->
+              <div class="drag-handle flex flex-col space-y-0.5 mt-1 opacity-40 group-hover:opacity-100 transition-opacity duration-200">
+                <div class="flex space-x-0.5">
+                  <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
+                  <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
+                </div>
+                <div class="flex space-x-0.5">
+                  <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
+                  <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
+                </div>
+                <div class="flex space-x-0.5">
+                  <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
+                  <div class="w-1 h-1 bg-gray-400 rounded-full"></div>
+                </div>
+              </div>
+              
+              <div class="flex-1 min-w-0">
+                <!-- Título de la tarea -->
+                <h5 class="font-semibold text-gray-800 mb-2 leading-snug"
+                    [class.line-through]="task.is_completed"
+                    [class.opacity-60]="task.is_completed">
+                  {{ task.title }}
+                </h5>
+                
+                <!-- Descripción -->
+                <p class="text-gray-600 text-sm mb-3 leading-relaxed"
+                   [class.opacity-60]="task.is_completed">
+                  {{ task.description }}
+                </p>
+                
+                <!-- Footer de la tarea -->
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="text-xs px-3 py-1.5 rounded-lg font-medium shadow-sm transition-all duration-200"
+                        [class]="task.is_completed ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-orange-100 text-orange-700 border border-orange-200'">
+                    {{ task.is_completed ? 'Completada' : 'Pendiente' }}
+                  </span>
+                  
+                  <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+                    #{{ task.id }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Mensaje cuando no hay tareas en la categoría -->
+          <div *ngIf="!groupedTasks[category] || groupedTasks[category].length === 0" 
+               class="empty-state text-center py-12 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 transition-all duration-300 hover:border-gray-400 hover:bg-gray-100">
+            <div class="text-4xl mb-3 opacity-50">📭</div>
+            <p class="text-gray-600 font-medium mb-1">Sin tareas</p>
+            <p class="text-gray-400 text-sm">Arrastra tareas aquí para comenzar</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="flex-auto lg:flex-1 w-full lg:w-50">
-        <ul id="right-sortable" class="flex flex-col">
-            <li
-                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-                <svg class="shrink-0 size-4"
-                    xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3">
-                    </path>
-                    <path d="M12 17h.01"></path>
-                </svg>
-                Questions
-               
-            </li>
-            <li
-                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-                <svg class="shrink-0 size-4"
-                    xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="18" cy="15" r="3"></circle>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M10 15H6a4 4 0 0 0-4 4v2"></path>
-                    <path d="m21.7 16.4-.9-.3"></path>
-                    <path d="m15.2 13.9-.9-.3"></path>
-                    <path d="m16.6 18.7.3-.9"></path>
-                    <path d="m19.1 12.2.3-.9"></path>
-                    <path d="m19.6 18.7-.4-1"></path>
-                    <path d="m16.8 12.3-.4-1"></path>
-                    <path d="m14.3 16.6 1-.4"></path>
-                    <path d="m20.7 13.8 1-.4"></path>
-                </svg>
-                Settings
-               
-            </li>
-            <li
-                class="inline-flex items-center gap-x-3 py-3 px-4 cursor-grab text-sm font-medium bg-white border border-gray-200 text-gray-800 -mt-px first:rounded-t-lg first:mt-0 last:rounded-b-lg">
-                <svg class="shrink-0 size-4"
-                    xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                </svg>
-                Activity
-               
-            </li>
-        </ul>
+    
+    <!-- Instrucciones simplificadas -->
+    <div class="mt-10 max-w-4xl mx-auto">
+      <div class="bg-white/95 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-lg">
+        <div class="flex items-start space-x-4">
+          <div class="flex-1">
+            <h4 class="text-xl font-bold text-gray-800 mb-4">Guía rápida</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="flex items-start space-x-2">
+                <span class="text-violet-500 font-bold">•</span>
+                <p class="text-gray-600 text-sm leading-relaxed"><strong class="text-gray-800">Arrastra</strong> tareas entre categorías para reorganizar</p>
+              </div>
+              <div class="flex items-start space-x-2">
+                <span class="text-cyan-500 font-bold">•</span>
+                <p class="text-gray-600 text-sm leading-relaxed"><strong class="text-gray-800">Reordena</strong> dentro de la misma categoría</p>
+              </div>
+              <div class="flex items-start space-x-2">
+                <span class="text-purple-500 font-bold">•</span>
+                <p class="text-gray-600 text-sm leading-relaxed"><strong class="text-gray-800">Hover</strong> para ver efectos visuales</p>
+              </div>
+              <div class="flex items-start space-x-2">
+                <span class="text-emerald-500 font-bold">•</span>
+                <p class="text-gray-600 text-sm leading-relaxed"><strong class="text-gray-800">Estados</strong> completada/pendiente</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="flex flex-col justify-center items-center py-20">
+      <div class="relative">
+        <div class="w-20 h-20 border-4 border-violet-500/30 border-t-violet-500 rounded-full animate-spin"></div>
+        <div class="absolute inset-0 w-20 h-20 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin-reverse"></div>
+      </div>
+      <p class="mt-6 text-slate-300 text-lg font-medium animate-pulse">Cargando tareas desde GraphQL...</p>
+      <div class="flex space-x-2 mt-4">
+        <div class="w-2 h-2 bg-violet-500 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+        <div class="w-2 h-2 bg-fuchsia-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+        <div class="w-2 h-2 bg-cyan-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+      </div>
+    </div>
+  </ng-template>
 </div>
-
-
-<ng-template #loading>
-    <p>Cargando tareas desde el API GraphQL...</p>
-</ng-template>

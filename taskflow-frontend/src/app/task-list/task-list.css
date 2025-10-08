@@ -1,0 +1,237 @@
+/* Efectos de glassmorphism */
+.glass-card {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Animación de gradiente para el título */
+@keyframes gradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+/* Efectos básicos para Drag and Drop */
+.dragging {
+  opacity: 0.6;
+  transform: rotate(2deg) scale(1.02);
+  z-index: 1000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+/* Zona de drop activa */
+.drag-over {
+  border-color: #3b82f6 !important;
+  background: rgba(59, 130, 246, 0.05) !important;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* Efectos hover para las tareas */
+.task-card {
+  transition: all 0.3s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Categorías con hover effect */
+.category-column:hover {
+  transform: translateY(-1px);
+}
+
+/* Drag handle */
+.drag-handle {
+  cursor: grab;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.task-card:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* Drag handle con cursor mejorado */
+.drag-handle {
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Animación para columnas de categorías */
+.category-column {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category-column:hover {
+  transform: translateY(-4px);
+}
+
+/* Animación del spinner de carga */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 1.5s linear infinite;
+}
+
+/* Efecto de pulso suave */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Animación de bounce para los dots */
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Estado vacío con hover */
+.empty-state {
+  transition: all 0.3s ease;
+}
+
+.empty-state:hover {
+  transform: scale(1.02);
+}
+
+/* Truncar texto con ellipsis */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Mejoras de accesibilidad y responsive */
+@media (max-width: 640px) {
+  .task-card {
+    padding: 0.875rem;
+  }
+
+  .category-column {
+    padding: 1rem;
+  }
+}
+
+/* Transiciones suaves globales */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Efecto de brillo en hover para badges */
+.task-card span[class*="bg-gradient"] {
+  transition: all 0.3s ease;
+}
+
+.task-card:hover span[class*="bg-gradient"] {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  transform: scale(1.05);
+}
+
+/* Sombras suaves para profundidad */
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+/* Animación de entrada para las instrucciones */
+.glass-card {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mejora del contraste en modo oscuro */
+.text-slate-300 {
+  color: rgb(203 213 225);
+}
+
+.text-slate-400 {
+  color: rgb(148 163 184);
+}
+
+/* Efecto de resplandor para elementos interactivos */
+.hover\:shadow-2xl:hover {
+  box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.25);
+}
+
+/* Transición suave para todos los elementos */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
