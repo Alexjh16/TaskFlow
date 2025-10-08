@@ -1,0 +1,20 @@
+<h3>Tareas Pendientes</h3>
+
+<div *ngIf="tasks$ | async as tasks; else loading"  >
+    <p *ngIf="tasks.length === 0" >No hay tareas pendientes </p>
+    <ul *ngIf="tasks.length > 0">
+        <li *ngFor="let task of tasks">
+            <span
+             [style.text-decoration]="task.is_completed ? 'line-through' : 'none'"
+             [style.color]="task.is_completed ? 'gray' : 'black'">
+            >
+            {{ task.title}}
+            </span>
+        </li>
+
+    </ul>
+</div>
+
+<ng-template #loading>
+    <p>Cargando tareas desde el API GraphQL...</p>
+</ng-template>
