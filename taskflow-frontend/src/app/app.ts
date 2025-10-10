@@ -6,8 +6,7 @@ import { TaskList } from './task-list/task-list';
   standalone: true,
   imports: [TaskList],
   template:  `
-  <main style="padding: 20px;">
-      <h1>TaskFlow - Administrador de Tareas</h1>
+    <main>
       <app-task-list></app-task-list>
     </main>
   `,

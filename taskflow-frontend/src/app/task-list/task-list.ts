@@ -1,16 +1,34 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component, type OnInit, ViewChild, TemplateRef } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { TasksService } from "../tasks.service"
 import type { Observable } from "rxjs"
+import { Header } from "./header/header"
+import { Stats } from "./stats/stats"
+import { CardHeader } from "./card-header/card-header"
+import { TaskCard } from "./task-card/task-card"
+import { Instructions } from "./instructions/instructions"
+import { EmptyTasks } from "./empty-tasks/empty-tasks"
+import { LoadingTemplate } from "../loading-template/loading-template"
+
 
 @Component({
   selector: "app-task-list",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, 
+    Header, 
+    Stats, 
+    CardHeader, 
+    LoadingTemplate,
+    TaskCard,
+    EmptyTasks,
+    Instructions    
+  ],
   templateUrl: "./task-list.html",
   styleUrl: "./task-list.css",
 })
 export class TaskList implements OnInit {
+  @ViewChild(LoadingTemplate) loadingComponent!: LoadingTemplate;
+  loading = true;
   tasks$: Observable<any[]> | undefined
   tasks: any[] = []
   groupedTasks: { [key: string]: any[] } = {}
@@ -28,13 +46,19 @@ export class TaskList implements OnInit {
   constructor(private tasksService: TasksService) {}
 
   ngOnInit(): void {
+    this.loading = true;
     this.tasks$ = this.tasksService.getTasks()
 
-    // Convertir Observable a Array y agrupar por categoría
-    this.tasks$.subscribe((tasks) => {
-      this.tasks = tasks
-      this.groupTasksByCategory()
-    })
+    
+    setTimeout(() => {
+      if (this.tasks$) {
+        this.tasks$.subscribe((tasks) => {
+          this.tasks = tasks
+          this.groupTasksByCategory()
+          this.loading = false;
+        })
+      }
+    }, 1500);
   }
 
   groupTasksByCategory(): void {

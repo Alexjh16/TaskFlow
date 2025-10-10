@@ -1,0 +1,11 @@
+<!-- Header de la categoría simplificado -->
+<div class="category-header mb-5 pb-4 border-b border-gray-200">
+    <div class="flex items-center justify-between">
+        <h4 class="text-lg font-bold text-gray-800">
+            {{ category }}
+        </h4>
+        <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-semibold">
+            {{ groupedTasks[category].length || 0 }}
+        </span>
+    </div>
+</div>
