@@ -8,6 +8,7 @@
   <div *ngIf="!loading" class="max-w-7xl mx-auto">
     <!-- Stats -->
     <app-stats [tasks]="tasks" [categories]="categories"></app-stats>
+    
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       <!-- Columns for every category -->
       <div *ngFor="let category of categories"

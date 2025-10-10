@@ -73,3 +73,21 @@ type Task{
   "Relación una Tarea pertenece a una Categoría"
   category: Category! @belongsTo
 }
+
+"Crear o actualizar una tarea"
+input CreateTaskInput {
+  category_id: ID!
+  title: String!
+  description: String!
+}
+
+"Definir las acciones que modifican los datos CRUD"
+type Mutation {
+    "Crear una nueva tarea"
+    createTask(input: CreateTaskInput! @spread): Task
+     @create(model: "App\\Models\\Task")
+
+     "Crear una nueva categoría"
+     createCategory(name: String!): Category
+      @create(model: "App\\Models\\Category")
+}
